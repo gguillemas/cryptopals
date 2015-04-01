@@ -33,11 +33,11 @@ func solveChallenge9() {
 
 func solveChallenge10() {
 	file, _ := os.Open("./files/10.txt")
-  scanner := bufio.NewScanner(file)
-  contents := ""
-  for scanner.Scan() {
-    contents += scanner.Text()
-  }
+	scanner := bufio.NewScanner(file)
+	contents := ""
+	for scanner.Scan() {
+		contents += scanner.Text()
+	}
 	ciphertext := cryptopals.Base64Decode(contents)
 	fmt.Printf("%s\n", cryptopals.AESCBCDecrypt(ciphertext, []byte("YELLOW SUBMARINE"), bytes.Repeat([]byte{byte(0)}, 16)))
 }
