@@ -28,7 +28,7 @@ func TestChallenge10(t *testing.T) {
 		contents += scanner.Text()
 	}
 
-	ciphertext := Base64Decode(contents)
+	ciphertext := MustBase64Decode(contents)
 	plaintext := AESCBCDecrypt(ciphertext, []byte("YELLOW SUBMARINE"), bytes.Repeat([]byte{byte(0)}, 16))
 	plaintext = PKCS7Unpad(plaintext)
 
@@ -65,7 +65,7 @@ func TestChallenge11(t *testing.T) {
 			ciphertext = AESECBEncrypt(plaintext, key)
 		}
 
-		if bytes.Compare(ciphertext[32:48], AESEncryptBlock(plaintext[32:48], key)) == 0 {
+		if bytes.Compare(ciphertext[32:48], MustAESEncryptBlock(plaintext[32:48], key)) == 0 {
 			if cbc {
 				t.Fatal("ciphertext incorrectly identified as AES ECB")
 			}

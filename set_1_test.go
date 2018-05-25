@@ -11,21 +11,21 @@ import (
 )
 
 func TestChallenge1(t *testing.T) {
-	decoded := Base64Encode(HexDecode(("49276d206b696c6c696e6720796f757220627261696e206c696b65206120706f69736f6e6f7573206d757368726f6f6d")))
+	decoded := Base64Encode(MustHexDecode(("49276d206b696c6c696e6720796f757220627261696e206c696b65206120706f69736f6e6f7573206d757368726f6f6d")))
 	if decoded != "SSdtIGtpbGxpbmcgeW91ciBicmFpbiBsaWtlIGEgcG9pc29ub3VzIG11c2hyb29t" {
 		t.Fatal("decoded text does not match solution")
 	}
 }
 
 func TestChallenge2(t *testing.T) {
-	decoded := HexEncode(XORBytes(HexDecode("1c0111001f010100061a024b53535009181c"), HexDecode("686974207468652062756c6c277320657965")))
+	decoded := HexEncode(XORBytes(MustHexDecode("1c0111001f010100061a024b53535009181c"), MustHexDecode("686974207468652062756c6c277320657965")))
 	if decoded != "746865206b696420646f6e277420706c6179" {
 		t.Fatal("decoded text does not match solution")
 	}
 }
 
 func TestChallenge3(t *testing.T) {
-	plaintext, key := XORCrack(HexDecode("1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736"))
+	plaintext, key := XORCrack(MustHexDecode("1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736"))
 	if key != byte(88) {
 		t.Fatal("cracked key does not match solution")
 	}
@@ -44,7 +44,7 @@ func TestChallenge4(t *testing.T) {
 	var candidate, plaintext []byte
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
-		candidate, _ = XORCrack(HexDecode(scanner.Text()))
+		candidate, _ = XORCrack(MustHexDecode(scanner.Text()))
 		if ScoreEnglish(candidate) > score {
 			plaintext = candidate
 			score = ScoreEnglish(candidate)
@@ -78,7 +78,7 @@ func TestChallenge6(t *testing.T) {
 		contents += scanner.Text()
 	}
 
-	ciphertext := Base64Decode(contents)
+	ciphertext := MustBase64Decode(contents)
 	distance, keylength, candidate := 0, len(ciphertext), len(ciphertext)
 	for length := 1; length <= 40; length++ {
 		distance1 := HammingDistance(ciphertext[0:length], ciphertext[length:length*2])
@@ -128,12 +128,12 @@ func TestChallenge7(t *testing.T) {
 		contents += scanner.Text()
 	}
 
-	ciphertext := Base64Decode(contents)
+	ciphertext := MustBase64Decode(contents)
 	key := []byte("YELLOW SUBMARINE")
 
 	var plaintext []byte
 	for i := 0; i < len(ciphertext); i += 16 {
-		plaintext = append(plaintext, AESDecryptBlock(ciphertext[i:i+16], key)...)
+		plaintext = append(plaintext, MustAESDecryptBlock(ciphertext[i:i+16], key)...)
 	}
 	plaintext = PKCS7Unpad(plaintext)
 
@@ -158,7 +158,7 @@ func TestChallenge8(t *testing.T) {
 	var ciphertext, result []byte
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
-		ciphertext = HexDecode(scanner.Text())
+		ciphertext = MustHexDecode(scanner.Text())
 		for i := 0; i < len(ciphertext); i += 16 {
 			block = ciphertext[i : i+16]
 			hits = 0
