@@ -99,6 +99,16 @@ func AESEncryptBlock(plaintext, key []byte) ([]byte, error) {
 	return ciphertext, nil
 }
 
+// MustAESEncryptBlock encrypts a byte slice corresponding with an AES block with a specified key or panics.
+func MustAESEncryptBlock(plaintext, key []byte) []byte {
+	ciphertext, err := AESEncryptBlock(plaintext, key)
+	if err != nil {
+		panic(err)
+	}
+
+	return ciphertext
+}
+
 // AESDecryptBlock decrypts a byte slice corresponding with an AES block with a specified key.
 func AESDecryptBlock(ciphertext, key []byte) ([]byte, error) {
 	block, err := aes.NewCipher(key)
@@ -112,16 +122,6 @@ func AESDecryptBlock(ciphertext, key []byte) ([]byte, error) {
 	plaintext := make([]byte, len(ciphertext))
 	decrypter.CryptBlocks(plaintext, ciphertext)
 	return plaintext, nil
-}
-
-// MustAESEncryptBlock encrypts a byte slice corresponding with an AES block with a specified key or panics.
-func MustAESEncryptBlock(plaintext, key []byte) []byte {
-	ciphertext, err := AESEncryptBlock(plaintext, key)
-	if err != nil {
-		panic(err)
-	}
-
-	return ciphertext
 }
 
 // MustAESDecryptBlock decrypts a byte slice corresponding with an AES block with a specified key or panics.
