@@ -2,7 +2,7 @@
 
 Solutions to the Matasano Crypto Challenges in Go.
 
-The helpers used in the challenges are implemented as a package and the challenges themselves as tests for the package.
+The helpers used in the challenges are implemented as a package and the challenges themselves as tests.
 
 ## Usage
 
